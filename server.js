@@ -9,7 +9,7 @@ app.use(express.json());
 
 mongoose
   .connect(
-    `mongodb+srv://kennzuki:${process.env.MONGO_PASSWORD}@cluster0.yryje9v.mongodb.net/saloon`
+    `mongodb+srv://kennzuki:${process.env.MONGO_PASSWORD}@cluster0.yryje9v.mongodb.net/saloon?`
   )
   .then(() => {
     console.log('Connected to MongoDB');
@@ -39,4 +39,20 @@ app.get('api/bookings', async (req, res)=>{
     req.statusCode(500).json({message:'Error fetching bookings'})
   }
 })
+
+app.post('api/bookings', async (req, res) => { 
+  try {
+    const { name, email, date, service, stylist } = req.body;
+    const newBooking = new Booking({ name, email, date, service, stylist });
+    await newBooking.save();
+    res.json(newBooking);
+  } catch (error) {
+    console.error('Error fetching bookings:', error)
+    req.statusCode(500).json({message:'Error fetching bookings'})
+  }
+})
+
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
+});
 
