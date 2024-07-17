@@ -28,4 +28,15 @@ const BookingSchema = new mongoose.Schema({
     stylist: { type: String, required: false },
 })
 
-const Booking=mongoose.model('Booking',BookingSchema)
+const Booking = mongoose.model('Booking', BookingSchema)
+
+app.get('api/bookings', async (req, res)=>{
+  try {
+    const bookings = await Booking.find().sort({ date: 1 })
+    res.json(bookings)
+  } catch (error) {
+    console.error('Error fetching bookings:', error)
+    req.statusCode(500).json({message:'Error fetching bookings'})
+  }
+})
+
