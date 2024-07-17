@@ -9,7 +9,7 @@ app.use(express.json());
 
 mongoose
   .connect(
-    `mongodb+srv://kennzuki:${process.env.MONGO_PASSWORD}@cluster0.yryje9v.mongodb.net/saloon?`
+    `mongodb+srv://kennzuki:${process.env.MONGODB_PASSWORD}@cluster0.yryje9v.mongodb.net/saloon`
   )
   .then(() => {
     console.log('Connected to MongoDB');
@@ -30,7 +30,7 @@ const BookingSchema = new mongoose.Schema({
 
 const Booking = mongoose.model('Booking', BookingSchema)
 
-app.get('api/bookings', async (req, res)=>{
+app.get('/api/bookings', async (req, res)=>{
   try {
     const bookings = await Booking.find().sort({ date: 1 })
     res.json(bookings)
@@ -40,7 +40,7 @@ app.get('api/bookings', async (req, res)=>{
   }
 })
 
-app.post('api/bookings', async (req, res) => { 
+app.post('/api/bookings', async (req, res) => { 
   try {
     const { name, email, date, service, stylist } = req.body;
     const newBooking = new Booking({ name, email, date, service, stylist });
